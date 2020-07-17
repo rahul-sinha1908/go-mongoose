@@ -6,4 +6,5 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 type ModelInterface interface {
 	GetID() primitive.ObjectID
 	GetName() string
+	CreateIndex()
 }
