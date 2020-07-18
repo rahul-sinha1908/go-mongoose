@@ -26,7 +26,7 @@ func InsertMany(models []interfaces.ModelInterface) (res *mongo.InsertManyResult
 	if models == nil || len(models) == 0 {
 		return nil, errors.New("The length of Model Array is 0")
 	}
-	collection := Get().Database.Collection(interfaces.GetGenericName(models))
+	collection := Get().Database.Collection(interfaces.GetName(models))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	iM := make([]interface{}, 0)

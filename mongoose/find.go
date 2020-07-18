@@ -12,7 +12,7 @@ import (
 
 // FindOne Searches one object and returns its value
 func FindOne(filter bson.M, b interfaces.ModelInterface) (err error) {
-	// fmt.Println("Collection Name : ", b.GetName())
+	// fmt.Println("Collection Name : ", interfaces.GetGenericName(b))
 	collection := Get().Database.Collection(interfaces.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
@@ -75,8 +75,8 @@ func FindByObjectID(objectID primitive.ObjectID, b interfaces.ModelInterface) (e
 
 // FindAll Get All Docs
 func FindAll(filter bson.M, model interfaces.ModelInterface, allModels *[]bson.M) error {
-	fmt.Println("Find All Name ", interfaces.GetGenericName(model))
-	collection := Get().Database.Collection(interfaces.GetGenericName(model))
+	fmt.Println("Find All Name ", interfaces.GetName(model))
+	collection := Get().Database.Collection(interfaces.GetName(model))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	cur, err := collection.Find(ctx, filter)

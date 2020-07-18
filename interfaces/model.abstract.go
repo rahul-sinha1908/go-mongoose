@@ -45,13 +45,13 @@ func (a ModelAbstract) GetID() primitive.ObjectID {
 }
 
 //GetName Returns the collection Name
-func GetName(a ModelInterface) string {
-	t := reflect.TypeOf(a)
-	return t.Name()
-}
+// func GetName(a ModelInterface) string {
+// 	t := reflect.TypeOf(a)
+// 	return t.Name()
+// }
 
-//GetGenericName Returns the collection Name
-func GetGenericName(a interface{}) string {
+//GetName Returns the collection Name
+func GetName(a interface{}) string {
 	t := reflect.TypeOf(a)
 	// fmt.Println(t.NumField())
 	// fmt.Println(t.Kind())
