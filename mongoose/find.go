@@ -13,7 +13,7 @@ import (
 
 // FindOne Searches one object and returns its value
 func FindOne(filter bson.M, b interfaces.ModelInterface) (err error) {
-	// fmt.Println("Collection Name : ", interfaces.GetGenericName(b))
+	// fmt.Println("Collection Name : ", mutility.GetName(b))
 	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
@@ -56,7 +56,7 @@ func FindByID(id string, b interfaces.ModelInterface) (err error) {
 
 // FindByObjectID Searches by Object ID
 func FindByObjectID(objectID primitive.ObjectID, b interfaces.ModelInterface) (err error) {
-	// fmt.Println("Collection Name : ", b.GetName())
+	fmt.Println("Collection Name : ", mutility.GetName(b))
 	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
@@ -74,10 +74,29 @@ func FindByObjectID(objectID primitive.ObjectID, b interfaces.ModelInterface) (e
 	return nil
 }
 
+func findByObjectID(objectID primitive.ObjectID, collectionName string) (interface{}, error) {
+	collection := Get().Database.Collection(collectionName)
+	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
+
+	res := collection.FindOne(ctx, bson.M{
+		"_id": objectID,
+	})
+	if res.Err() != nil {
+		return nil, res.Err()
+	}
+	var b interface{}
+	err := res.Decode(&b)
+	if err != nil {
+		return nil, err
+	}
+
+	return b, nil
+}
+
 // FindAll Get All Docs
-func FindAll(filter bson.M, model interfaces.ModelInterface, allModels *[]bson.M) error {
-	fmt.Println("Find All Name ", mutility.GetName(model))
-	collection := Get().Database.Collection(mutility.GetName(model))
+func FindAll(filter bson.M, modelType interfaces.ModelInterface, allModels *[]bson.M) error {
+	fmt.Println("Find All Name ", mutility.GetName(modelType))
+	collection := Get().Database.Collection(mutility.GetName(modelType))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	cur, err := collection.Find(ctx, filter)

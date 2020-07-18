@@ -37,7 +37,7 @@ func CreateIndex(a interface{}) {
 	var indexes []interface{} = make([]interface{}, 0)
 
 	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(0)
+		field := t.Field(i)
 		tagStr := field.Tag.Get("mson")
 		tags := strings.Split(tagStr, ",")
 		if len(tags) == 0 {
@@ -53,6 +53,7 @@ func CreateIndex(a interface{}) {
 
 func analyzeAndCreateTagIndex(tags []string) *interface{} {
 	// TODO Do some stuff to analyze the tags
+	// fmt.Println("Tags ", tags)
 
 	return nil
 }

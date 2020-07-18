@@ -29,17 +29,20 @@ type DBConnection struct {
 var (
 	_mongo        Mongo
 	connectionURL string = "mongodb://localhost:27017"
-	dbName        string = "defaultDB"
+	dbName        string = "teamace"
 )
 
-//InitialDB This needs to be called if you are using some other than default DB
-func InitialDB(dbConnection DBConnection) {
+//InitiateDB This needs to be called if you are using some other than default DB
+func InitiateDB(dbConnection DBConnection) {
 	if dbConnection.User == "" {
 		connectionURL = "mongodb://" + dbConnection.Host + ":" + string(dbConnection.Port)
 	} else {
 		connectionURL = "mongodb://" + url.QueryEscape(dbConnection.User) + ":" + url.QueryEscape(dbConnection.Password) + "@" + dbConnection.Host + ":" + string(dbConnection.Port)
 	}
-	dbName = dbConnection.Database
+
+	if dbConnection.Database != "" {
+		dbName = dbConnection.Database
+	}
 }
 
 //Get This function will recieve the Mongo structure

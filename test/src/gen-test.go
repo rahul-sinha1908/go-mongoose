@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 
+	"github.com/gin-gonic/gin"
 	"github.com/rahul-sinha1908/go-mongoose/mongoose"
 	"github.com/rahul-sinha1908/go-mongoose/mutility"
 	test "github.com/rahul-sinha1908/go-mongoose/test/models"
@@ -12,29 +13,44 @@ import (
 //RunTest Run Some Minor tests
 func RunTest() {
 	//mongoose.
+	// mongoose.InitiateDB(mongoose.DBConnection{
+	// 	Database: "teamace",
+	// 	Host:     "localhost",
+	// 	Port:     27017,
+	// 	User:     "",
+	// 	Password: "",
+	// })
+
 	uM := test.UserModel{}
-	allModels := make([]bson.M, 0)
+	// allModels := make([]bson.M, 0)
 	err := mongoose.FindOne(bson.M{
-		"name": "Something here",
+		"name": "test",
 	}, &uM)
 
 	if err != nil {
 		fmt.Println("Error 1 ", err)
 	}
-	err = mongoose.FindAll(bson.M{}, test.UserModel{}, &allModels)
-	if err != nil {
-		fmt.Println("Error 2 ", err)
-	}
+	// err = mongoose.FindAll(bson.M{}, test.UserModel{}, &allModels)
+	// if err != nil {
+	// 	fmt.Println("Error 2 ", err)
+	// }
 
-	fmt.Println(allModels)
-	sModel := make([]test.UserModel, len(allModels))
-	mbytes, _ := bson.Marshal(allModels[0])
-	bson.Unmarshal(mbytes, &sModel[0])
+	// fmt.Println(allModels)
+	// sModel := make([]test.UserModel, len(allModels))
+	// mbytes, _ := bson.Marshal(allModels[0])
+	// bson.Unmarshal(mbytes, &sModel[0])
 
-	if err != nil {
-		fmt.Println("Error", err)
-	}
-	fmt.Println("Total Length ", len(allModels), sModel[0].ID)
-	fmt.Println(uM.ID, uM.Name)
-	fmt.Println(mutility.GetName(uM))
+	// if err != nil {
+	// 	fmt.Println("Error", err)
+	// }
+	// fmt.Println("Total Length ", len(allModels), sModel[0].ID)
+	// fmt.Println(uM.ID, uM.Name)
+	// fmt.Println(mutility.GetName(uM))
+	// fmt.Println(uM.Test)
+
+	mutility.CreateIndex(test.UserModel{})
+	mongoose.PopulateObject(&uM, "Test", &test.UserModel{})
+	fmt.Println(gin.H{
+		"data": uM,
+	})
 }
