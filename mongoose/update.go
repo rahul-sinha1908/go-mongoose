@@ -10,7 +10,7 @@ import (
 
 //UpdateByID Updates by ID
 func UpdateByID(model interfaces.ModelInterface) error {
-	collection := Get().Database.Collection(model.GetName())
+	collection := Get().Database.Collection(interfaces.GetName(model))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
 	_, err := collection.UpdateOne(ctx, bson.M{
