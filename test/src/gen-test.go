@@ -3,8 +3,8 @@ package test
 import (
 	"fmt"
 
-	"github.com/rahul-sinha1908/go-mongoose/interfaces"
 	"github.com/rahul-sinha1908/go-mongoose/mongoose"
+	"github.com/rahul-sinha1908/go-mongoose/mutility"
 	test "github.com/rahul-sinha1908/go-mongoose/test/models"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -34,7 +34,7 @@ func RunTest() {
 	if err != nil {
 		fmt.Println("Error", err)
 	}
-	fmt.Println("Total Length ", len(allModels), sModel[0].ID, sModel[0].GetID())
+	fmt.Println("Total Length ", len(allModels), sModel[0].ID)
 	fmt.Println(uM.ID, uM.Name)
-	fmt.Println(interfaces.GetName(uM))
+	fmt.Println(mutility.GetName(uM))
 }

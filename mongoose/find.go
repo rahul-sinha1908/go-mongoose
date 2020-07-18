@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/rahul-sinha1908/go-mongoose/interfaces"
+	"github.com/rahul-sinha1908/go-mongoose/mutility"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -13,7 +14,7 @@ import (
 // FindOne Searches one object and returns its value
 func FindOne(filter bson.M, b interfaces.ModelInterface) (err error) {
 	// fmt.Println("Collection Name : ", interfaces.GetGenericName(b))
-	collection := Get().Database.Collection(interfaces.GetName(b))
+	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
 	res := collection.FindOne(ctx, filter)
@@ -32,7 +33,7 @@ func FindOne(filter bson.M, b interfaces.ModelInterface) (err error) {
 // FindByID Searches by ID
 func FindByID(id string, b interfaces.ModelInterface) (err error) {
 	// fmt.Println("Collection Name : ", b.GetName())
-	collection := Get().Database.Collection(interfaces.GetName(b))
+	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
 	userID, err := primitive.ObjectIDFromHex(id)
@@ -56,7 +57,7 @@ func FindByID(id string, b interfaces.ModelInterface) (err error) {
 // FindByObjectID Searches by Object ID
 func FindByObjectID(objectID primitive.ObjectID, b interfaces.ModelInterface) (err error) {
 	// fmt.Println("Collection Name : ", b.GetName())
-	collection := Get().Database.Collection(interfaces.GetName(b))
+	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
 	res := collection.FindOne(ctx, bson.M{
@@ -75,8 +76,8 @@ func FindByObjectID(objectID primitive.ObjectID, b interfaces.ModelInterface) (e
 
 // FindAll Get All Docs
 func FindAll(filter bson.M, model interfaces.ModelInterface, allModels *[]bson.M) error {
-	fmt.Println("Find All Name ", interfaces.GetName(model))
-	collection := Get().Database.Collection(interfaces.GetName(model))
+	fmt.Println("Find All Name ", mutility.GetName(model))
+	collection := Get().Database.Collection(mutility.GetName(model))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	cur, err := collection.Find(ctx, filter)
