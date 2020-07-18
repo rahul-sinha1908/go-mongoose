@@ -1,19 +1,19 @@
 package mongoose
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
 
-	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //PopulateObject an Object
-func PopulateObject(obj interface{}, field string, modelPtr interface{}) {
-	t := reflect.TypeOf(obj)
-	val := reflect.ValueOf(obj).Elem().FieldByName(field)
+func PopulateObject(objPtr interface{}, field string, modelPtr interface{}) {
+	t := reflect.TypeOf(objPtr)
+	val := reflect.ValueOf(objPtr).Elem().FieldByName(field)
 
 	if t.Kind() != reflect.Ptr {
 		panic("Model should be a Pointer")
