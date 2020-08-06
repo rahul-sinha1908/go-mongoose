@@ -11,18 +11,19 @@ import (
 )
 
 //PopulateObject an Object
-func PopulateObject(objPtr interface{}, field string, modelPtr interface{}) {
+func PopulateObject(objPtr interface{}, fieldName string, modelPtr interface{}) {
 	t := reflect.TypeOf(objPtr)
-	val := reflect.ValueOf(objPtr).Elem().FieldByName(field)
-
 	if t.Kind() != reflect.Ptr {
 		panic("Model should be a Pointer")
 	}
 	if reflect.TypeOf(modelPtr).Kind() != reflect.Ptr {
 		panic("Model should be a Pointer")
 	}
+
+	val := reflect.ValueOf(objPtr).Elem().FieldByName(fieldName)
+
 	t = t.Elem()
-	f, b := t.FieldByName(field)
+	f, b := t.FieldByName(fieldName)
 	if b == false {
 		return
 	}
@@ -50,20 +51,21 @@ func PopulateObject(objPtr interface{}, field string, modelPtr interface{}) {
 }
 
 //PopulateObjectArray Populates the Object Array
-func PopulateObjectArray(obj interface{}, field string, modelType interface{}) ([]interface{}, error) {
+func PopulateObjectArray(obj interface{}, field string, modelArrPtr interface{}) error {
 	t := reflect.TypeOf(obj)
+	if t.Kind() != reflect.Ptr {
+		return errors.New("Object should be a Pointer")
+	}
+	if reflect.TypeOf(modelArrPtr).Kind() == reflect.Ptr {
+		return errors.New("The Type need not to be pointer")
+	}
+
 	val := reflect.ValueOf(obj).Elem().FieldByName(field)
 
-	if t.Kind() != reflect.Ptr {
-		panic("Object should be a Pointer")
-	}
-	if reflect.TypeOf(modelType).Kind() == reflect.Ptr {
-		panic("The Type need not to be pointer")
-	}
 	t = t.Elem()
 	f, b := t.FieldByName(field)
 	if b == false {
-		return nil, errors.New("No Field")
+		return errors.New("No Field")
 	}
 
 	tags := strings.Split(f.Tag.Get("mson"), ",")
@@ -82,13 +84,13 @@ func PopulateObjectArray(obj interface{}, field string, modelType interface{}) (
 			"_id": bson.M{
 				"$in": objIds,
 			},
-		}, &modelType)
+		}, modelArrPtr)
 
 		if err != nil {
-			return nil, err
+			return err
 		}
-
+		val.Set(reflect.ValueOf(modelArrPtr).Elem())
 	}
 
-	return nil, nil
+	return nil
 }
