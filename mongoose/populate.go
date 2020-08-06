@@ -46,7 +46,7 @@ func PopulateObject(objPtr interface{}, fieldName string, modelPtr interface{}) 
 			return
 		}
 
-		val.Set(reflect.ValueOf(modelPtr).Elem())
+		// val.Set(reflect.ValueOf(modelPtr).Elem())
 	}
 }
 
@@ -91,7 +91,7 @@ func PopulateObjectArray(obj interface{}, field string, modelArrPtr interface{})
 		if err != nil {
 			return err
 		}
-		val.Set(reflect.ValueOf(modelArrPtr).Elem())
+		// val.Set(reflect.ValueOf(modelArrPtr).Elem())
 	}
 
 	return nil

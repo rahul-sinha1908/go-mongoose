@@ -14,8 +14,8 @@ type UserModel struct {
 	Password      string             `json:"password,omitempty" bson:"password,omitempty"`
 	Email         string             `json:"email,omitempty" bson:"email,omitempty" mson:"cunique"`
 	FirebaseToken string             `json:"firebaseToken" bson:"firebaseToken" mson:"unique"`
-	Test          interface{}        `json:"test" bson:"test" mson:"collection=UserModel"`
-	Teams         interface{}        `json:"teams" bson:"teams" mson:"collection=UserModel"`
+	Test          primitive.ObjectID `json:"test" bson:"test" mson:"collection=UserModel"`
+	Teams         primitive.A        `json:"teams" bson:"teams" mson:"collection=UserModel"`
 	MainProfile   string             `json:"mainProfile" bson:"mainProfile"`
 	Phone         string             `json:"phone" bson:"phone" mson:"cunique"`
 	SocialMedia   string             `json:"socialMedia" bson:"socialMedia"`
@@ -25,14 +25,17 @@ type UserModel struct {
 	Status        int                `json:"status" bson:"status"`
 }
 
-func (c *UserModel) PopulateTest() {
-	mongoose.PopulateObject(c, "Test", &UserModel{})
+func (c *UserModel) PopulateTest() *UserModel {
+	u := UserModel{}
+	mongoose.PopulateObject(c, "Test", &u)
+	return &u
 }
 
-func (c *UserModel) PopulateTeams() {
+func (c *UserModel) PopulateTeams() *[]UserModel {
 	teams := make([]UserModel, 0)
 	err := mongoose.PopulateObjectArray(c, "Teams", &teams)
 	if err != nil {
 		fmt.Println("Error While Populate ", err)
 	}
+	return &teams
 }
