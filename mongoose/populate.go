@@ -56,7 +56,8 @@ func PopulateObjectArray(obj interface{}, field string, modelArrPtr interface{})
 	if t.Kind() != reflect.Ptr {
 		return errors.New("Object should be a Pointer")
 	}
-	if reflect.TypeOf(modelArrPtr).Kind() == reflect.Ptr {
+	// fmt.Println("Type ", reflect.TypeOf(modelArrPtr).Elem().Elem().Name())
+	if reflect.TypeOf(modelArrPtr).Kind() != reflect.Ptr {
 		return errors.New("The Type need not to be pointer")
 	}
 
@@ -78,13 +79,14 @@ func PopulateObjectArray(obj interface{}, field string, modelArrPtr interface{})
 			continue
 		}
 
-		objIds := val.Interface().([]primitive.ObjectID)
-
+		objIds := val.Interface().(primitive.A)
+		// fmt.Println("Object IDs ", objIds)
 		err := FindAll(bson.M{
 			"_id": bson.M{
 				"$in": objIds,
 			},
 		}, modelArrPtr)
+		// fmt.Println(modelArrPtr)
 
 		if err != nil {
 			return err

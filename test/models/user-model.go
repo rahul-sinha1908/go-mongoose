@@ -1,6 +1,9 @@
 package test
 
 import (
+	"fmt"
+
+	"github.com/rahul-sinha1908/go-mongoose/mongoose"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -20,4 +23,16 @@ type UserModel struct {
 	Developments  string             `json:"developments" bson:"developments"`
 	UserType      int                `json:"userType" bson:"userType"`
 	Status        int                `json:"status" bson:"status"`
+}
+
+func (c *UserModel) PopulateTest() {
+	mongoose.PopulateObject(c, "Test", &UserModel{})
+}
+
+func (c *UserModel) PopulateTeams() {
+	teams := make([]UserModel, 0)
+	err := mongoose.PopulateObjectArray(c, "Teams", &teams)
+	if err != nil {
+		fmt.Println("Error While Populate ", err)
+	}
 }

@@ -2,7 +2,6 @@ package mongoose
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/rahul-sinha1908/go-mongoose/mutility"
@@ -55,7 +54,7 @@ func FindByID(id string, b interface{}) (err error) {
 
 // FindByObjectID Searches by Object ID
 func FindByObjectID(objectID primitive.ObjectID, bPtr interface{}) (err error) {
-	fmt.Println("Collection Name : ", mutility.GetName(bPtr))
+	// fmt.Println("Collection Name : ", mutility.GetName(bPtr))
 	collection := Get().Database.Collection(mutility.GetName(bPtr))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
@@ -94,7 +93,7 @@ func findByObjectID(objectID primitive.ObjectID, collectionName string) (interfa
 
 // FindAll Get All Docs
 func FindAll(filter bson.M, modelsOutArrayPtr interface{}) error {
-	fmt.Println("Find All Name ", mutility.GetName(modelsOutArrayPtr))
+	// fmt.Println("Find All Name ", mutility.GetName(modelsOutArrayPtr))
 	collection := Get().Database.Collection(mutility.GetName(modelsOutArrayPtr))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 

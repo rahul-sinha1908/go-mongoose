@@ -49,8 +49,9 @@ func RunTest() {
 	// fmt.Println(uM.Test)
 
 	mutility.CreateIndex(test.UserModel{})
-	mongoose.PopulateObject(&uM, "Test", &test.UserModel{})
+	uM.PopulateTest()
+	uM.PopulateTeams()
 	fmt.Println(gin.H{
-		"data": uM.Test,
+		"user": uM,
 	})
 }
