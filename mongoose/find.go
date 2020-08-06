@@ -54,9 +54,9 @@ func FindByID(id string, b interface{}) (err error) {
 }
 
 // FindByObjectID Searches by Object ID
-func FindByObjectID(objectID primitive.ObjectID, b interface{}) (err error) {
-	fmt.Println("Collection Name : ", mutility.GetName(b))
-	collection := Get().Database.Collection(mutility.GetName(b))
+func FindByObjectID(objectID primitive.ObjectID, bPtr interface{}) (err error) {
+	fmt.Println("Collection Name : ", mutility.GetName(bPtr))
+	collection := Get().Database.Collection(mutility.GetName(bPtr))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 
 	res := collection.FindOne(ctx, bson.M{
@@ -65,7 +65,7 @@ func FindByObjectID(objectID primitive.ObjectID, b interface{}) (err error) {
 	if res.Err() != nil {
 		return res.Err()
 	}
-	err = res.Decode(b)
+	err = res.Decode(bPtr)
 	if err != nil {
 		return err
 	}
@@ -93,16 +93,16 @@ func findByObjectID(objectID primitive.ObjectID, collectionName string) (interfa
 }
 
 // FindAll Get All Docs
-func FindAll(filter bson.M, modelType interface{}, allModels *[]bson.M) error {
-	fmt.Println("Find All Name ", mutility.GetName(modelType))
-	collection := Get().Database.Collection(mutility.GetName(modelType))
+func FindAll(filter bson.M, modelsOutArrayPtr interface{}) error {
+	fmt.Println("Find All Name ", mutility.GetName(modelsOutArrayPtr))
+	collection := Get().Database.Collection(mutility.GetName(modelsOutArrayPtr))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
 	cur, err := collection.Find(ctx, filter)
 	if err != nil {
 		return err
 	}
-	err = cur.All(ctx, allModels)
+	err = cur.All(ctx, modelsOutArrayPtr)
 	if err != nil {
 		return err
 	}

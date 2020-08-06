@@ -78,39 +78,16 @@ func PopulateObjectArray(obj interface{}, field string, modelType interface{}) (
 
 		objIds := val.Interface().([]primitive.ObjectID)
 
-		data := make([]bson.M, 0)
 		err := FindAll(bson.M{
 			"_id": bson.M{
 				"$in": objIds,
 			},
-		}, modelType, &data)
+		}, &modelType)
 
 		if err != nil {
 			return nil, err
 		}
 
-		// mType := reflect.TypeOf(modelType)
-
-		for i := range data {
-			bD := data[i]
-			b, er := bson.Marshal(bD)
-			if er != nil {
-				return nil, er
-			}
-			er = bson.Unmarshal(b, &modelType)
-			if er != nil {
-				return nil, er
-			}
-
-		}
-
-		// err := FindByObjectID(t1, modelPtr)
-		// if err != nil {
-		// 	fmt.Println(err)
-		// 	return
-		// }
-
-		// val.Set(reflect.ValueOf(modelPtr).Elem())
 	}
 
 	return nil, nil
