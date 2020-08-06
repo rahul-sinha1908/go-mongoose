@@ -4,13 +4,12 @@ import (
 	"context"
 	"time"
 
-	"github.com/rahul-sinha1908/go-mongoose/interfaces"
 	"github.com/rahul-sinha1908/go-mongoose/mutility"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 //UpdateByID Updates by ID
-func UpdateByID(model interfaces.ModelInterface) error {
+func UpdateByID(model interface{}) error {
 	collection := Get().Database.Collection(mutility.GetName(model))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
 

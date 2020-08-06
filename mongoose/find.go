@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rahul-sinha1908/go-mongoose/interfaces"
 	"github.com/rahul-sinha1908/go-mongoose/mutility"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // FindOne Searches one object and returns its value
-func FindOne(filter bson.M, b interfaces.ModelInterface) (err error) {
+func FindOne(filter bson.M, b interface{}) (err error) {
 	// fmt.Println("Collection Name : ", mutility.GetName(b))
 	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
@@ -31,7 +30,7 @@ func FindOne(filter bson.M, b interfaces.ModelInterface) (err error) {
 }
 
 // FindByID Searches by ID
-func FindByID(id string, b interfaces.ModelInterface) (err error) {
+func FindByID(id string, b interface{}) (err error) {
 	// fmt.Println("Collection Name : ", b.GetName())
 	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
@@ -55,7 +54,7 @@ func FindByID(id string, b interfaces.ModelInterface) (err error) {
 }
 
 // FindByObjectID Searches by Object ID
-func FindByObjectID(objectID primitive.ObjectID, b interfaces.ModelInterface) (err error) {
+func FindByObjectID(objectID primitive.ObjectID, b interface{}) (err error) {
 	fmt.Println("Collection Name : ", mutility.GetName(b))
 	collection := Get().Database.Collection(mutility.GetName(b))
 	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
@@ -94,7 +93,7 @@ func findByObjectID(objectID primitive.ObjectID, collectionName string) (interfa
 }
 
 // FindAll Get All Docs
-func FindAll(filter bson.M, modelType interfaces.ModelInterface, allModels *[]bson.M) error {
+func FindAll(filter bson.M, modelType interface{}, allModels *[]bson.M) error {
 	fmt.Println("Find All Name ", mutility.GetName(modelType))
 	collection := Get().Database.Collection(mutility.GetName(modelType))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)

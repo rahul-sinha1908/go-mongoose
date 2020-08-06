@@ -5,13 +5,12 @@ import (
 	"errors"
 	"time"
 
-	"github.com/rahul-sinha1908/go-mongoose/interfaces"
 	"github.com/rahul-sinha1908/go-mongoose/mutility"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 //InsertOne This will insert just one Data
-func InsertOne(model interfaces.ModelInterface) (res *mongo.InsertOneResult, err error) {
+func InsertOne(model interface{}) (res *mongo.InsertOneResult, err error) {
 	collection := Get().Database.Collection(mutility.GetName(model))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
@@ -23,7 +22,7 @@ func InsertOne(model interfaces.ModelInterface) (res *mongo.InsertOneResult, err
 }
 
 //InsertMany This will insert multiple Data
-func InsertMany(models []interfaces.ModelInterface) (res *mongo.InsertManyResult, err error) {
+func InsertMany(models []interface{}) (res *mongo.InsertManyResult, err error) {
 	if models == nil || len(models) == 0 {
 		return nil, errors.New("The length of Model Array is 0")
 	}
