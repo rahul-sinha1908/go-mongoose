@@ -49,6 +49,7 @@ func RunTest() {
 	// fmt.Println(uM.Test)
 
 	mutility.CreateIndex(test.UserModel{})
+	// uM.Teams = append(uM.Teams, "")
 	// test := uM.PopulateTest()
 	uM.PopulateTeams()
 	fmt.Println(gin.H{

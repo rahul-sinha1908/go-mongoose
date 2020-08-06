@@ -25,12 +25,14 @@ type UserModel struct {
 	Status        int                `json:"status" bson:"status"`
 }
 
+//PopulateTest This will populate the test field and give to you
 func (c *UserModel) PopulateTest() *UserModel {
 	u := UserModel{}
 	mongoose.PopulateObject(c, "Test", &u)
 	return &u
 }
 
+//PopulateTeams This will populate the teams and give it to you
 func (c *UserModel) PopulateTeams() *[]UserModel {
 	teams := make([]UserModel, 0)
 	err := mongoose.PopulateObjectArray(c, "Teams", &teams)
