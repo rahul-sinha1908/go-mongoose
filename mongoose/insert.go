@@ -26,6 +26,7 @@ func InsertOne(modelPtr interface{}) (res *mongo.InsertOneResult, err error) {
 }
 
 //InsertMany This will insert multiple Data
+//TODO Find a way to pass pointer and attach its ID to the respective array elements
 func InsertMany(models []interface{}) (res *mongo.InsertManyResult, err error) {
 	if models == nil || len(models) == 0 {
 		return nil, errors.New("The length of Model Array is 0")

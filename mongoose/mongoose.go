@@ -27,6 +27,9 @@ type DBConnection struct {
 	Password string
 }
 
+//ShortWaitTime Small Wait time
+//MediumWaitTime Medium Wait Time
+//LongWaitTime Long wait time
 var (
 	_mongo        Mongo
 	connectionURL string = "mongodb://localhost:27017"
