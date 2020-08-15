@@ -43,6 +43,9 @@ var (
 //InitiateDB This needs to be called if you are using some other than default DB
 func InitiateDB(dbConnection DBConnection) {
 	// fmt.Println(dbConnection.Port)
+	if dbConnection.Port == 0 {
+		dbConnection.Port = 27017
+	}
 	if dbConnection.User == "" {
 		connectionURL = "mongodb://" + dbConnection.Host + ":" + strconv.Itoa(dbConnection.Port)
 	} else {
