@@ -13,7 +13,7 @@ import (
 func FindOne(filter bson.M, b interface{}) (err error) {
 	// fmt.Println("Collection Name : ", mutility.GetName(b))
 	collection := Get().Database.Collection(mutility.GetName(b))
-	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), MediumWaitTime*time.Second)
 
 	res := collection.FindOne(ctx, filter)
 	if res.Err() != nil {
@@ -32,7 +32,7 @@ func FindOne(filter bson.M, b interface{}) (err error) {
 func FindByID(id string, b interface{}) (err error) {
 	// fmt.Println("Collection Name : ", b.GetName())
 	collection := Get().Database.Collection(mutility.GetName(b))
-	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), ShortWaitTime*time.Second)
 
 	userID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -56,7 +56,7 @@ func FindByID(id string, b interface{}) (err error) {
 func FindByObjectID(objectID primitive.ObjectID, bPtr interface{}) (err error) {
 	// fmt.Println("Collection Name : ", mutility.GetName(bPtr))
 	collection := Get().Database.Collection(mutility.GetName(bPtr))
-	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), ShortWaitTime*time.Second)
 
 	res := collection.FindOne(ctx, bson.M{
 		"_id": objectID,
@@ -74,7 +74,7 @@ func FindByObjectID(objectID primitive.ObjectID, bPtr interface{}) (err error) {
 
 func findByObjectID(objectID primitive.ObjectID, collectionName string) (interface{}, error) {
 	collection := Get().Database.Collection(collectionName)
-	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), ShortWaitTime*time.Second)
 
 	res := collection.FindOne(ctx, bson.M{
 		"_id": objectID,
@@ -95,7 +95,7 @@ func findByObjectID(objectID primitive.ObjectID, collectionName string) (interfa
 func FindAll(filter bson.M, modelsOutArrayPtr interface{}) error {
 	// fmt.Println("Find All Name ", mutility.GetName(modelsOutArrayPtr))
 	collection := Get().Database.Collection(mutility.GetName(modelsOutArrayPtr))
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), LongWaitTime*time.Second)
 
 	cur, err := collection.Find(ctx, filter)
 	if err != nil {

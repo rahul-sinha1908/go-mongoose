@@ -31,6 +31,10 @@ var (
 	_mongo        Mongo
 	connectionURL string = "mongodb://localhost:27017"
 	dbName        string = "teamace"
+
+	ShortWaitTime  time.Duration = 2
+	MediumWaitTime time.Duration = 5
+	LongWaitTime   time.Duration = 10
 )
 
 //InitiateDB This needs to be called if you are using some other than default DB

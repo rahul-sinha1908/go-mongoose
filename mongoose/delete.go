@@ -12,7 +12,7 @@ import (
 func DeleteOne(filter bson.M, collectionName string) (*mongo.DeleteResult, error) {
 	// fmt.Println("Collection Name : ", b.GetName())
 	collection := Get().Database.Collection(collectionName)
-	ctx, _ := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), MediumWaitTime*time.Second)
 
 	return collection.DeleteOne(ctx, filter)
 }

@@ -13,7 +13,7 @@ import (
 //InsertOne This will insert just one Data
 func InsertOne(modelPtr interface{}) (res *mongo.InsertOneResult, err error) {
 	collection := Get().Database.Collection(mutility.GetName(modelPtr))
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), MediumWaitTime*time.Second)
 
 	res, err = collection.InsertOne(ctx, modelPtr)
 	if err != nil {
@@ -31,11 +31,11 @@ func InsertMany(models []interface{}) (res *mongo.InsertManyResult, err error) {
 		return nil, errors.New("The length of Model Array is 0")
 	}
 	collection := Get().Database.Collection(mutility.GetName(models))
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), LongWaitTime*time.Second)
 
-	iM := make([]interface{}, 0)
-	iM = append(iM, models)
-	res, err = collection.InsertMany(ctx, iM)
+	// iM := make([]interface{}, 0)
+	// iM = append(iM, models)
+	res, err = collection.InsertMany(ctx, models)
 	if err != nil {
 		return nil, err
 	}
