@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"strconv"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -34,10 +35,11 @@ var (
 
 //InitiateDB This needs to be called if you are using some other than default DB
 func InitiateDB(dbConnection DBConnection) {
+	// fmt.Println(dbConnection.Port)
 	if dbConnection.User == "" {
-		connectionURL = "mongodb://" + dbConnection.Host + ":" + string(dbConnection.Port)
+		connectionURL = "mongodb://" + dbConnection.Host + ":" + strconv.Itoa(dbConnection.Port)
 	} else {
-		connectionURL = "mongodb://" + url.QueryEscape(dbConnection.User) + ":" + url.QueryEscape(dbConnection.Password) + "@" + dbConnection.Host + ":" + string(dbConnection.Port)
+		connectionURL = "mongodb://" + url.QueryEscape(dbConnection.User) + ":" + url.QueryEscape(dbConnection.Password) + "@" + dbConnection.Host + ":" + strconv.Itoa(dbConnection.Port)
 	}
 
 	if dbConnection.Database != "" {
@@ -53,6 +55,8 @@ func Get() Mongo {
 		if _mongo.Err == nil {
 			_mongo.Database = _mongo.client.Database(dbName)
 			fmt.Print("Database Created Successfully\n")
+		} else {
+			panic(_mongo.Err)
 		}
 	}
 	return _mongo

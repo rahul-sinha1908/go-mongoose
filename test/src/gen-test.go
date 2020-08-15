@@ -13,14 +13,19 @@ import (
 //RunTest Run Some Minor tests
 func RunTest() {
 	//mongoose.
-	// mongoose.InitiateDB(mongoose.DBConnection{
-	// 	Database: "teamace",
-	// 	Host:     "localhost",
-	// 	Port:     27017,
-	// 	User:     "",
-	// 	Password: "",
-	// })
+	mongoose.InitiateDB(mongoose.DBConnection{
+		Database: "witfit",
+		Host:     "localhost",
+		Port:     27017,
+		User:     "",
+		Password: "",
+	})
 
+	tM := test.UserModel{
+		Email: "Something@gmail.com",
+	}
+	mongoose.InsertOne(&tM)
+	fmt.Println("ID ", tM)
 	uM := test.UserModel{}
 	// allModels := make([]bson.M, 0)
 	err := mongoose.FindOne(bson.M{

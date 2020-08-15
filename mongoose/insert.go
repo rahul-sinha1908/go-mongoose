@@ -3,6 +3,7 @@ package mongoose
 import (
 	"context"
 	"errors"
+	"reflect"
 	"time"
 
 	"github.com/rahul-sinha1908/go-mongoose/mutility"
@@ -10,14 +11,17 @@ import (
 )
 
 //InsertOne This will insert just one Data
-func InsertOne(model interface{}) (res *mongo.InsertOneResult, err error) {
-	collection := Get().Database.Collection(mutility.GetName(model))
+func InsertOne(modelPtr interface{}) (res *mongo.InsertOneResult, err error) {
+	collection := Get().Database.Collection(mutility.GetName(modelPtr))
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
-	res, err = collection.InsertOne(ctx, model)
+	res, err = collection.InsertOne(ctx, modelPtr)
 	if err != nil {
 		return nil, err
 	}
+	// modelPtr.ID = res.InsertedID
+	val := reflect.ValueOf(modelPtr).Elem().FieldByName("ID")
+	val.Set(reflect.ValueOf(res.InsertedID))
 	return res, err
 }
 
