@@ -7,6 +7,7 @@ import (
 	"github.com/rahul-sinha1908/go-mongoose/mutility"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // FindOne Searches one object and returns its value
@@ -98,6 +99,26 @@ func FindAll(filter bson.M, modelsOutArrayPtr interface{}) error {
 	ctx, _ := context.WithTimeout(context.Background(), LongWaitTime*time.Second)
 
 	cur, err := collection.Find(ctx, filter)
+	if err != nil {
+		return err
+	}
+	err = cur.All(ctx, modelsOutArrayPtr)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// FindAllWithPagination Get All Docs with Pagination
+func FindAllWithPagination(filter bson.M, start int64, count int64, modelsOutArrayPtr interface{}) error {
+	// fmt.Println("Find All Name ", mutility.GetName(modelsOutArrayPtr))
+	collection := Get().Database.Collection(mutility.GetName(modelsOutArrayPtr))
+	ctx, _ := context.WithTimeout(context.Background(), LongWaitTime*time.Second)
+
+	cur, err := collection.Find(ctx, filter, &options.FindOptions{
+		Skip:  &start,
+		Limit: &count,
+	})
 	if err != nil {
 		return err
 	}
