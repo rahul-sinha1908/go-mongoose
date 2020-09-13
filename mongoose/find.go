@@ -128,3 +128,20 @@ func FindAllWithPagination(filter bson.M, start int64, count int64, modelsOutArr
 	}
 	return nil
 }
+
+//FindAllWithOptions Find all with options
+func FindAllWithOptions(filter bson.M, option options.FindOptions, modelsOutArrayPtr interface{}) error {
+	// fmt.Println("Find All Name ", mutility.GetName(modelsOutArrayPtr))
+	collection := Get().Database.Collection(mutility.GetName(modelsOutArrayPtr))
+	ctx, _ := context.WithTimeout(context.Background(), LongWaitTime*time.Second)
+
+	cur, err := collection.Find(ctx, filter, &option)
+	if err != nil {
+		return err
+	}
+	err = cur.All(ctx, modelsOutArrayPtr)
+	if err != nil {
+		return err
+	}
+	return nil
+}
