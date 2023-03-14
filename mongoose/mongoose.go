@@ -25,6 +25,15 @@ type DBConnection struct {
 	Database string
 	User     string
 	Password string
+
+	/*
+		In addition to the standard connection format, MongoDB supports a DNS-constructed seed list. Using DNS to construct the available servers list allows more flexibility of deployment and the ability to change the servers in rotation without reconfiguring clients.
+
+		In order to leverage the DNS seed list, use a connection string prefix of mongodb+srv rather than the standard mongodb. The +srv indicates to the client that the hostname that follows corresponds to a DNS SRV record. The driver or mongosh will then query the DNS for the record to determine which hosts are running the mongod instances.
+
+		https://www.mongodb.com/docs/manual/reference/connection-string/#dns-seed-list-connection-format
+	*/
+	SRV bool
 }
 
 //ShortWaitTime Small Wait time
@@ -46,10 +55,20 @@ func InitiateDB(dbConnection DBConnection) {
 	if dbConnection.Port == 0 {
 		dbConnection.Port = 27017
 	}
+	urlHeader := "mongodb://"
+	if dbConnection.SRV {
+		urlHeader = "mongodb+srv://"
+	}
+
 	if dbConnection.User == "" {
-		connectionURL = "mongodb://" + dbConnection.Host + ":" + strconv.Itoa(dbConnection.Port)
+		connectionURL = urlHeader + dbConnection.Host
 	} else {
-		connectionURL = "mongodb://" + url.QueryEscape(dbConnection.User) + ":" + url.QueryEscape(dbConnection.Password) + "@" + dbConnection.Host + ":" + strconv.Itoa(dbConnection.Port)
+		connectionURL = urlHeader + url.QueryEscape(dbConnection.User) + ":" + url.QueryEscape(dbConnection.Password) + "@" + dbConnection.Host
+	}
+
+	if !dbConnection.SRV {
+		connectionURL += ":" + strconv.Itoa(dbConnection.Port)
+
 	}
 
 	if dbConnection.Database != "" {
